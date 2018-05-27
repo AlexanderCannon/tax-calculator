@@ -67,6 +67,17 @@ Run the linting standalone with 🙌
 ```
 $ yarn lint
 ```
+#### Releasing
+
+When cutting a release please increment the version number according to the [Sem Ver](https://semver.org/) standards. 😎
+1. MAJOR version when you make incompatible API changes, 🤝
+2. MINOR version when you add functionality in a backwards-compatible manner, and 🍾
+3. PATCH version when you make backwards-compatible bug fixes. ❄️
+
+Run the release job with 🔥
+```
+$ yarn release
+```
 
 
 ## Deploying
