@@ -78,6 +78,9 @@ describe('getOwedForBand', () => {
   it('should return accurately calculated tax for a given band', () =>
     expect(getOwedForBand(taxLowerBand.start, taxLowerBand.end, taxLowerBand.rate))
       .toEqual(6898.20));
+  it('should be accurate for the lower rate with no allowance', () =>
+    expect(getOwedForBand(0, taxLowerBand.end, taxLowerBand.rate))
+      .toEqual(9270));
   it('should be accurate for the higher rate of tax', () =>
     expect(getOwedForBand(taxHigherBand.start, taxHigherBand.end, taxHigherBand.rate))
       .toEqual(41460));
