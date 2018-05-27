@@ -19,6 +19,6 @@
     "start": "nodemon src",
     "serve": "node src",
     "test": "jest",
-    "lint": "eslint",
+    "lint": "eslint"
   }
 }
