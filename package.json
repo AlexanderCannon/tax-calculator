@@ -18,6 +18,7 @@
   "scripts": {
     "start": "nodemon src",
     "serve": "node src",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint",
   }
 }
