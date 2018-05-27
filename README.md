@@ -11,21 +11,21 @@ I am trying to think of a clever way to make this deployable as config. 👍
 
 This project uses NVM to allow you to keep things consistent, I'm using node 10 because this is a personal project trying the new features is a worthwhile trade off for stability. 🤷‍
 
-Select the correct node version using ☑️
+✅ Select the correct node version using
 ```
 $ nvm use
 ```
-Or, if you don't have the specified version install and use with 💪
+💪 Or, if you don't have the specified version install and use with
 ```
 $ nvm install 10.2.0
 
 $ nvm use
 ```
-Install 🔧
+🔧 Install
 ```
 $ yarn
 ```
-Then start 🎮
+🎮 Then start
 ```
 $ yarn start
 ```
@@ -37,10 +37,16 @@ It's as easy as that! 😎
 
 Read my [contributing guide](/CONTRIBUTING.md) to learn how to get started.
 
+## Changelog
+
+My [changelog](/CHANGELOG.md) is generated when a release is performed, using standard version for automated docs goodness. 💅
+
+
 ## Technical design considerations
 
 The model currently is based on the real UK tax rules as per [gov.uk](https://www.gov.uk/browse/tax/income-tax) as interpreted by myself; I am not an accountant! 🤓
 
-# Disclaimer!
+# Disclaimer
 ## I am not an accountant!
+### This software is presented with no liability or assumption of any sort of accounting expertise on its behalf
 I have spent the bulk of my time thinking about how to make this project functional, and node 10 rather than how tax should work, so please don't base any real estimations off my assumptions. 😱

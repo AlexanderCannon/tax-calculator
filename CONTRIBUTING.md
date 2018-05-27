@@ -11,51 +11,51 @@ If you want to make any non-trivial changes to the app please raise an issue so 
 
 Feel free to report any bugs via issues, ideally with test cases and evidence. 🛰
 
-If you fix a bug and don't think it is necessary to raise an issue then just raise a pull request directly. 🛩
+ If you fix a bug and don't think it is necessary to raise an issue then just raise a pull request directly. 🛩
 
 ### Pull requests
 Make sure your pull requests describe what your change is for and where possible provide evidence of improvements. Where necessary please add tests. ⏲
 
 ### Commit messages
-Please use the [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines) for your commit messages. 🛡
+🛡 Please use the [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines) for your commit messages.
 
 ### Tests
 
-All changes should have comprehensive test coverage. 🏆
+🏆 All changes should have comprehensive test coverage.
 
-Before you commit ensure `yarn test` and `yarn lint` pass. 🥇
+🥇 Before you commit ensure `yarn test` and `yarn lint` pass.
 
 ## Developing Locally
 
-Select the correct node version using ☑️
+✅ Select the correct node version using
 ```
 $ nvm use
 ```
-Or, if you don't have the specified version install and use with 💪
+💪 Or, if you don't have the specified version install and use with
 ```
 $ nvm install 10.2.0
 
 $ nvm use
 ```
-Install 🔧
+🔧 Install
 ```
 $ yarn
 ```
-Then start 🎮
+🎮 Then start
 ```
 $ yarn start
 ```
 
-See the scripts fields in `package.json` for all available scripts. 🎁
+🎁 See the scripts fields in `package.json` for all available scripts.
 
 ### Tests
 
-Run the full suite with 🌡
+🌡 Run the full suite with
 ```
 $ yarn test
 ```
 
-See [package.json](package.json) for test scripts. Please remember to check all tests are passing before you raise a pull request.
+See [package.json](package.json) for test scripts. Please remember to check all tests are passing before you raise a pull request. 🆘
 
 ### Linting
 
@@ -63,18 +63,18 @@ I am using [eslint](https://eslint.org/) with the airbnb config. 🔬
 
 See the [eslintrc](.eslintrc.js) for more details of our rules, and remember to check all your code conforms to the repository's standards before you raise a pull request. 🤖
 
-Run the linting standalone with 🙌
+🙌 Run the linting standalone with
 ```
 $ yarn lint
 ```
 #### Releasing
 
-When cutting a release please increment the version number according to the [Sem Ver](https://semver.org/) standards. 😎
-1. MAJOR version when you make incompatible API changes, 🤝
-2. MINOR version when you add functionality in a backwards-compatible manner, and 🍾
-3. PATCH version when you make backwards-compatible bug fixes. ❄️
+🤝 When cutting a release please increment the version number according to the [Sem Ver](https://semver.org/) standards.
+1. 🍾 MAJOR version when you make incompatible API changes,
+2. ❄️ MINOR version when you add functionality in a backwards-compatible manner, and
+3. 😎 PATCH version when you make backwards-compatible bug fixes.
 
-Run the release job with 🔥
+🔥 Run the release job with
 ```
 $ yarn release
 ```
