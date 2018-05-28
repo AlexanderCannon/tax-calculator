@@ -1,5 +1,3 @@
-const { getTotalAllowances } = require('./utils/personalAllowance');
-
 module.exports = [
   {
     year: '2018/19',
@@ -15,8 +13,6 @@ module.exports = [
     },
     incomeTax: [
       {
-        startFunction: (allowance, user, grossIncome) =>
-          getTotalAllowances(allowance, user, grossIncome),
         start: -1,
         rate: 0.20,
         end: 4635000,

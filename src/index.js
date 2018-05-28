@@ -1,10 +1,11 @@
 const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
+const { defaultTo } = require('ramda');
 
 const { getNet } = require('./routes');
 
-const port = process.env.port || '1920';
+const port = defaultTo(1920, process.env.port);
 
 const app = express();
 

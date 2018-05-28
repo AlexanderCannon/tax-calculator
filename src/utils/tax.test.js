@@ -1,6 +1,6 @@
 const {
   makePennies,
-  makePounds,
+  fromPennies,
   getOwedForBand,
   getBandCap,
   getBandBottom,
@@ -47,14 +47,14 @@ describe('makePennies', () => {
   });
 });
 
-describe('makePounds', () => {
+describe('fromPennies', () => {
   it('should divide the value by 100', () => {
-    expect(makePounds(10000)).toEqual(100.00);
-    expect(makePounds(100)).toEqual(1.00);
-    expect(makePounds(2500)).toEqual(25.00);
-    expect(makePounds(1)).toEqual(0.01);
-    expect(makePounds(10)).toEqual(0.10);
-    expect(makePounds(3)).toEqual(0.03);
+    expect(fromPennies(10000)).toEqual(100.00);
+    expect(fromPennies(100)).toEqual(1.00);
+    expect(fromPennies(2500)).toEqual(25.00);
+    expect(fromPennies(1)).toEqual(0.01);
+    expect(fromPennies(10)).toEqual(0.10);
+    expect(fromPennies(3)).toEqual(0.03);
   });
 });
 
