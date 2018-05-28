@@ -1,20 +1,33 @@
-const { getBandBottom, getBandTop, getOwedForBand } = require('../utils/tax');
+const {
+  makePennies,
+  getBandBottom,
+  getBandCap,
+  getOwedForBand,
+  bandBottomLowerThanAllowance,
+} = require('../utils/tax');
 
 const taxRules = require('../taxRules');
 
+const allowance = 1185900;
+
 const getNet = ({ body }, res) => {
-  const { salary } = body;
-  const gross = salary;
-  const boundBandTop = getBandTop(gross);
+  const { grossIncome } = body;
+  const gross = makePennies(grossIncome);
+  const boundBandCap = getBandCap(gross);
 
   const boundBandBottom = getBandBottom(gross);
-
+  const boundBandBottomLowerThanAllowance = bandBottomLowerThanAllowance(allowance);
   const x = taxRules.map(({ incomeTax, nationalInsurance }) =>
     ({
       incomeTax: incomeTax.map(({ start, end, rate }) =>
-        getOwedForBand(boundBandBottom(start), boundBandTop(end), rate)),
+        getOwedForBand(
+          boundBandBottomLowerThanAllowance(boundBandBottom(start)),
+          boundBandCap(end), rate,
+        ))
+        .reduce((a, b) => a + b),
       nationalInsurance: nationalInsurance.rates.map(({ start, end, rate }) =>
-        getOwedForBand(boundBandBottom(start), boundBandTop(end), rate)),
+        getOwedForBand(boundBandBottom(start), boundBandCap(end), rate))
+        .reduce((a, b) => a + b),
     }));
   res.send(x);
 };

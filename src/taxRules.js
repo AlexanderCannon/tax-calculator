@@ -4,13 +4,13 @@ module.exports = [
   {
     year: '2018/19',
     allowance: {
-      basic: 11850.00,
-      age6574: 11850.00,
-      age75over: 11850.00,
-      blind: 2320.00,
+      basic: 1185000,
+      age6574: 1185000,
+      age75over: 1185000,
+      blind: 232000,
       thresholds: {
-        age: 27700.00,
-        taper: 100000.00,
+        age: 2770000,
+        taper: 10000000,
       },
     },
     incomeTax: [
@@ -19,15 +19,15 @@ module.exports = [
           getTotalAllowances(allowance, user, grossIncome),
         start: -1,
         rate: 0.20,
-        end: 46350.00,
+        end: 4635000,
       },
       {
-        start: 46350.00,
-        end: 150000.00,
+        start: 4635000,
+        end: 15000000,
         rate: 0.40,
       },
       {
-        start: 150000,
+        start: 15000000,
         end: -1,
         rate: 0.45,
       },
@@ -36,17 +36,17 @@ module.exports = [
       pensionAge: 65,
       rates: [
         {
-          start: 0.00,
-          end: 162.00,
-          rate: 0.00,
+          start: 0,
+          end: 16200,
+          rate: 0,
         },
         {
-          start: 162.00,
-          end: 892.00,
+          start: 16200,
+          end: 89200,
           rate: 0.12,
         },
         {
-          start: 892.00,
+          start: 89200,
           end: -1,
           rate: 0.02,
         },
@@ -54,11 +54,11 @@ module.exports = [
     },
     studentLoan: {
       plan1: {
-        threshold: 18330.00,
+        threshold: 1833000,
         rate: 0.09,
       },
       plan2: {
-        threshold: 25000.00,
+        threshold: 2500000,
         rate: 0.09,
       },
     },
@@ -66,28 +66,28 @@ module.exports = [
   {
     year: '2017/18',
     allowance: {
-      basic: 11500.00,
-      age6574: 11500.00,
-      age75over: 11500.00,
-      blind: 2390.00,
+      basic: 1150000,
+      age6574: 1150000,
+      age75over: 1150000,
+      blind: 239000,
       thresholds: {
-        age: 27700.00,
-        taper: 100000.00,
+        age: 2770000,
+        taper: 10000000,
       },
     },
     incomeTax: [
       {
-        start: 0.00,
-        end: 33500.00,
+        start: 0,
+        end: 3350000,
         rate: 0.20,
       },
       {
-        start: 33500.00,
-        end: 150000.00,
+        start: 3350000,
+        end: 15000000,
         rate: 0.40,
       },
       {
-        start: 150000,
+        start: 15000000,
         end: -1,
         rate: 0.45,
       },
@@ -96,13 +96,13 @@ module.exports = [
       pensionAge: 65,
       rates: [
         {
-          start: 0.00,
-          end: 157.00,
-          rate: 0.00,
+          start: 0,
+          end: 15700,
+          rate: 0,
         },
         {
-          start: 157.00,
-          end: 866.00,
+          start: 15700,
+          end: 86600,
           rate: 0.12,
         },
         {
@@ -114,11 +114,11 @@ module.exports = [
     },
     studentLoan: {
       plan1: {
-        threshold: 17775.00,
+        threshold: 1777500,
         rate: 0.09,
       },
       plan2: {
-        threshold: 21000.00,
+        threshold: 2100000,
         rate: 0.09,
       },
     },

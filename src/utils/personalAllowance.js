@@ -1,4 +1,4 @@
-const { gaussianRound } = require('./');
+const { nearestWholePenny } = require('./');
 
 const getAgeRelatedContributions = (allowance, user) => {
   if (user.age >= 75) {
@@ -62,7 +62,7 @@ const getPersonalAllowance = (
   user,
   grossIncome,
 ) =>
-  gaussianRound(getAllowanceAfterAgeAdjust(allowance, user, grossIncome)
+  nearestWholePenny(getAllowanceAfterAgeAdjust(allowance, user, grossIncome)
     - getTaperDeductions(allowance, user, grossIncome));
 
 const getBlindAllowance = (allowance, user) => {
