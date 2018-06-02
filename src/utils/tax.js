@@ -1,22 +1,29 @@
 const {
+  compose,
   multiply,
-  lte,
+  subtract,
   gt,
 } = require('ramda');
-const { divideRightToLeft } = require('./');
+const { divideRightToLeft, pickSmaller } = require('./');
 
 const makePennies = multiply(100);
 const fromPennies = divideRightToLeft(100);
+const getOwedForBand = (start, end, rate) => {
+  console.log(gt(start, end));
+  return (gt(end, start) ? multiply(subtract(end, start), rate) : 0);
+};
 
-const getOwedForBand = (start, end, rate) =>
-  (gt(end, start) ? (end - start) * rate : 0);
+const uncappedBand = bandEnd => (bandEnd === -1);
 
-const getBandCap = salary => bandCap => (lte(salary, bandCap) ? salary : bandCap);
+const getBandEnd = salary => bandEnd => (
+  uncappedBand(bandEnd)
+    ? salary
+    : pickSmaller(salary, bandEnd));
 
-const getBandBottom = salary => bandBottom => (gt(salary, bandBottom) ? bandBottom : 0);
+const getBandStart = salary => bandStart => (gt(salary, bandStart) ? bandStart : 0);
 
-const bandBottomLowerThanAllowance = allowance => bandBottom =>
-  (gt(allowance, bandBottom) ? allowance : bandBottom);
+const bandStartLowerThanAllowance = allowance => bandStart =>
+  (gt(allowance, bandStart) ? allowance : bandStart);
 
 
 const makeMonthly = divideRightToLeft(12);
@@ -31,9 +38,10 @@ module.exports = {
   makePennies,
   fromPennies,
   getOwedForBand,
-  getBandCap,
-  getBandBottom,
-  bandBottomLowerThanAllowance,
+  uncappedBand,
+  getBandEnd,
+  getBandStart,
+  bandStartLowerThanAllowance,
   makeMonthly,
   makeWeekly,
   makeDaily,

@@ -2,9 +2,10 @@ const {
   makePennies,
   fromPennies,
   getOwedForBand,
+  uncappedBand,
   getBandCap,
-  getBandBottom,
-  bandBottomLowerThanAllowance,
+  getBandStart,
+  bandStartLowerThanAllowance,
   makeMonthly,
   makeWeekly,
   makeDaily,
@@ -20,21 +21,50 @@ const taxHigherBand = {
   end: 15000000,
   rate: 0.40,
 };
-const taxTopBand = {
+const taxEndBand = {
   start: 15000000,
   end: -1,
   rate: 0.45,
 };
+const hidden = {
+  one: 1,
+  // const pensionAge = 65;
+  // const niFree = {
+  //   start: 0.00,
+  //   end: 162.00,
+  //   rate: 0.00,
+  // };
+  // const niLower = {
+  //   start: 162.00,
+  //   end: 892.00,
+  //   rate: 0.12,
+  // };
+  // const niHigher = {
+  //   start: 892.00,
+  //   end: -1,
+  //   rate: 0.02,
+  // };
+
+  // const studentLoanPlan1 = {
+  //   threshold: 18330.00,
+  //   rate: 0.09,
+  // };
+  // const studentLoanPlan = {
+  //   threshold: 25000.00,
+  //   rate: 0.09,
+  // };
+};
+hidden.one = 2;
 
 const salaryBelowMinIncome = 1185000;
 const salaryEqualMinIncome = 1185900;
 const salaryAboveMinIncome = 1186000;
-const salaryBottomBracketMid = 2400000;
-const salaryBottomBracketTop = 4635000;
-const salaryMidBracketBottom = 4635100;
-// const salaryMidBracketTop = 150000;
-// const salaryTopBracketBottom = 150001;
-const salaryTopBracketHigh = 25000000;
+const salaryStartBracketMid = 2400000;
+const salaryStartBracketEnd = 4635000;
+const salaryMidBracketStart = 4635100;
+// const salaryMidBracketEnd = 150000;
+// const salaryEndBracketStart = 150001;
+const salaryEndBracketHigh = 25000000;
 
 describe('makePennies', () => {
   it('should return 100 times the value given', () => {
@@ -58,26 +88,29 @@ describe('fromPennies', () => {
   });
 });
 
-describe('getBandBottom', () => {
+describe('getBandStart', () => {
   it('should return 0 if salary is lower than the band min', () =>
-    expect(getBandBottom(salaryBelowMinIncome)(taxLowerBand.start)).toEqual(0));
+    expect(getBandStart(salaryBelowMinIncome)(taxLowerBand.start)).toEqual(0));
   it('should return 0 if salary equals the band min', () =>
-    expect(getBandBottom(salaryEqualMinIncome)(taxLowerBand.start)).toEqual(0));
+    expect(getBandStart(salaryEqualMinIncome)(taxLowerBand.start)).toEqual(0));
   it('should not change the band if salary is in than the band min', () =>
-    expect(getBandBottom(salaryAboveMinIncome)(taxLowerBand.start))
+    expect(getBandStart(salaryAboveMinIncome)(taxLowerBand.start))
       .toEqual(taxLowerBand.start));
 });
 
 describe('getBandCap', () => {
   it('should return the band cap if the band cap is less than the salary', () =>
-    expect(getBandCap(salaryMidBracketBottom)(taxLowerBand.end))
+    expect(getBandCap(salaryMidBracketStart)(taxLowerBand.end))
       .toEqual(taxLowerBand.end));
   it('should return the salary if the band cap is less than the salary', () =>
-    expect(getBandCap(salaryBottomBracketMid)(taxLowerBand.end))
-      .toEqual(salaryBottomBracketMid));
-  it('should return the band cap if the band cap equals than the salary', () =>
-    expect(getBandCap(salaryBottomBracketTop)(taxLowerBand.end))
+    expect(getBandCap(salaryStartBracketMid)(taxLowerBand.end))
+      .toEqual(salaryStartBracketMid));
+  it('should return the band cap if the band cap equals the salary', () =>
+    expect(getBandCap(salaryStartBracketEnd)(taxLowerBand.end))
       .toEqual(taxLowerBand.end));
+  it('should return the salary if the band cap is -1', () =>
+    expect(getBandCap(salaryStartBracketEnd)(taxEndBand.end))
+      .toEqual(salaryStartBracketEnd));
 });
 
 describe('getOwedForBand', () => {
@@ -90,23 +123,23 @@ describe('getOwedForBand', () => {
   it('should be accurate for the higher rate of tax', () =>
     expect(getOwedForBand(taxHigherBand.start, taxHigherBand.end, taxHigherBand.rate))
       .toEqual(4146000));
-  it('should be accurate for the top rate of tax', () =>
-    expect(getOwedForBand(taxTopBand.start, salaryTopBracketHigh, taxTopBand.rate))
+  it('should be accurate for the end rate of tax', () =>
+    expect(getOwedForBand(taxEndBand.start, salaryEndBracketHigh, taxEndBand.rate))
       .toEqual(4500000));
 });
 
-describe('bandBottomLowerThanAllowance', () => {
-  it('should return the allowance if it is higher than the band bottom', () =>
-    expect(bandBottomLowerThanAllowance(salaryAboveMinIncome)(taxLowerBand.start))
+describe('bandStartLowerThanAllowance', () => {
+  it('should return the allowance if it is higher than the band start', () =>
+    expect(bandStartLowerThanAllowance(salaryAboveMinIncome)(taxLowerBand.start))
       .toEqual(salaryAboveMinIncome));
-  it('should return the allowance if the band bottom is 0', () =>
-    expect(bandBottomLowerThanAllowance(salaryAboveMinIncome)(0))
+  it('should return the allowance if the band start is 0', () =>
+    expect(bandStartLowerThanAllowance(salaryAboveMinIncome)(0))
       .toEqual(salaryAboveMinIncome));
-  it('should return the allowance if the band bottom is negative', () =>
-    expect(bandBottomLowerThanAllowance(salaryAboveMinIncome)(-1))
+  it('should return the allowance if the band start is negative', () =>
+    expect(bandStartLowerThanAllowance(salaryAboveMinIncome)(-1))
       .toEqual(salaryAboveMinIncome));
-  it('should return the band bottom allowance is smaller', () =>
-    expect(bandBottomLowerThanAllowance(salaryBelowMinIncome)(taxHigherBand.start))
+  it('should return the band start allowance is smaller', () =>
+    expect(bandStartLowerThanAllowance(salaryBelowMinIncome)(taxHigherBand.start))
       .toEqual(taxHigherBand.start));
 });
 
@@ -131,5 +164,15 @@ describe('makeDaily', () => {
     expect(makeDaily(365)).toEqual(1);
     expect(makeDaily(3400)).toEqual(9.315068493150685);
     expect(makeDaily(24000)).toEqual(65.75342465753425);
+  });
+});
+describe('uncappedBand', () => {
+  it('should return true if band cap is less than 0', () =>
+    expect(uncappedBand(-1)).toEqual(true));
+  it('should return false if band cap is 0', () =>
+    expect(uncappedBand(0)).toEqual(false));
+  it('should return false if band cap is positive', () => {
+    expect(uncappedBand(1)).toEqual(false);
+    expect(uncappedBand(salaryAboveMinIncome)).toEqual(false);
   });
 });
