@@ -14,7 +14,7 @@ module.exports = [
     },
     incomeTax: [
       {
-        start: -1,
+        start: 0,
         rate: 0.20,
         end: 4635000,
       },
@@ -99,7 +99,7 @@ module.exports = [
         rate: 0.12,
       },
       {
-        start: 866.00,
+        start: 86600,
         end: -1,
         rate: 0.02,
       },

@@ -1,5 +1,6 @@
 const { add } = require('ramda');
 const {
+  nearestWholePenny,
   curriedPickLarger,
   aLessThanB,
   getAge,
@@ -32,11 +33,11 @@ const getNet = (request, reply) => {
       bandStart(start),
       bandEnd(end), rate,
     );
-  const calculateNationalInsurance = ({ start, end, rate }) =>
-    getOwedForBand(
-      start,
-      weeklyBandEnd(end), rate,
-    );
+  const calculateNationalInsurance = ({ start, end, rate }) => getOwedForBand(
+    start,
+    weeklyBandEnd(end),
+    rate,
+  );
 
   const taxes = taxRules.map(({ incomeTax, nationalInsurance, pensionAge }) => (
     {
@@ -44,9 +45,9 @@ const getNet = (request, reply) => {
         .map(calculateIncomeTax)
         .reduce(add, 0)),
       nationalInsurance: aLessThanB(age, pensionAge)
-        ? fromPennies(fromWeekly(nationalInsurance
+        ? fromPennies(nearestWholePenny(fromWeekly(nationalInsurance
           .map(calculateNationalInsurance)
-          .reduce(add, 0)))
+          .reduce(add, 0))))
         : 0,
     }));
   reply.send(taxes);
