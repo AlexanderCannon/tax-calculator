@@ -2,15 +2,15 @@ const fastify = require('fastify')();
 const helmet = require('fastify-helmet');
 const { defaultTo } = require('ramda');
 
-const { getNet } = require('./controllers');
+const routes = require('./routes');
 
 const port = defaultTo(1920, process.env.port);
 
 fastify.register(
   helmet,
-  { hidePoweredBy: { setTo: 'PHP 4.2.0' } },
+  { hidePoweredBy: { setTo: 'PHP 6.11.3' } },
 );
-fastify.post('/', getNet);
+fastify.register(routes);
 
 const start = async () => {
   try {
