@@ -1,4 +1,6 @@
-const { lt, gt, curry } = require('ramda');
+const {
+  lt, gt, curry,
+} = require('ramda');
 const differenceInYears = require('date-fns/difference_in_years');
 
 const nearestWholePenny = x => Math.round(x * 100) / 100;
@@ -28,6 +30,9 @@ const getAge = (dateOfBirth, ageAtDate = undefined) =>
     new Date(dateOfBirth),
   );
 
+const addThree = (a, b, c) => a + b + c;
+
+const curriedAddThree = curry(addThree);
 
 module.exports = {
   nearestWholePenny,
@@ -40,4 +45,6 @@ module.exports = {
   aLessThanB,
   curriedALessThanB,
   getAge,
+  addThree,
+  curriedAddThree,
 };

@@ -9,6 +9,8 @@ const {
   aLessThanB,
   curriedALessThanB,
   getAge,
+  addThree,
+  curriedAddThree,
 } = require('./');
 
 describe('nearestWholePenny', () => {
@@ -83,5 +85,33 @@ describe('getAge', () => {
   it('should not return less than the correct age at the time of writing', () => {
     expect(getAge('1989/07/17')).toBeGreaterThanOrEqual(28);
     expect(getAge('2000/07/17')).toBeGreaterThanOrEqual(17);
+  });
+});
+
+describe('addThree', () => {
+  it('should add three numbers', () => {
+    expect(addThree(1, 1, 1)).toEqual(3);
+    expect(addThree(1, 2, 3)).toEqual(6);
+  });
+});
+describe('curriedAddThree', () => {
+  it('should add three numbers when passed one param then two', () => {
+    expect(curriedAddThree(1)(1, 1)).toEqual(3);
+    expect(curriedAddThree(1)(2, 3)).toEqual(6);
+  });
+  it('should add three numbers when passed two param then one', () => {
+    expect(curriedAddThree(1, 1)(1)).toEqual(3);
+    expect(curriedAddThree(1, 2)(3)).toEqual(6);
+  });
+  it('should add three numbers when called three times', () => {
+    expect(curriedAddThree(1)(1)(1)).toEqual(3);
+    expect(curriedAddThree(1)(2)(3)).toEqual(6);
+  });
+  it('should be a function if it is passed two the params', () => {
+    expect(typeof curriedAddThree(1)(1)).toBe('function');
+    expect(typeof curriedAddThree(1, 2)).toBe('function');
+  });
+  it('should be a function if it is passed one param', () => {
+    expect(typeof curriedAddThree(1)).toBe('function');
   });
 });

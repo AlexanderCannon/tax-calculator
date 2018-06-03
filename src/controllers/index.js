@@ -1,9 +1,10 @@
-const { add, __ } = require('ramda');
+const { add, subtract, __ } = require('ramda');
 const {
   nearestWholePenny,
   pickLarger,
   aLessThanB,
   getAge,
+  addThree,
 } = require('../utils/');
 const {
   makePennies,
@@ -54,19 +55,35 @@ const getNet = (request, reply) => {
     allowances,
   }) => {
     const allowance = getAllowanceFromSalary(allowances, { blind, pensionContributions, age });
-    return ({
-      incomeTax: fromPennies(incomeTax
-        .map(item => calculateIncomeTax(item, allowance))
-        .reduce(add, 0)),
-      nationalInsurance: aLessThanB(age, pensionAge)
-        ? fromPennies(nearestWholePenny(fromWeekly(nationalInsurance
-          .map(calculateNationalInsurance)
-          .reduce(add, 0))))
-        : 0,
-      studentLoan: studentLoanPlan && fromPennies(getStudentLoan(
+    const calculatedIncomeTax = incomeTax
+      .map(item => calculateIncomeTax(item, allowance))
+      .reduce(add, 0);
+    const calculatedNationalInsurance = aLessThanB(age, pensionAge)
+      ? nearestWholePenny(fromWeekly(nationalInsurance
+        .map(calculateNationalInsurance)
+        .reduce(add, 0)))
+      : 0;
+    const calculatedStudentLoan = studentLoanPlan
+      ? getStudentLoan(
         studentLoan[studentLoanPlan].threshold,
         studentLoan[studentLoanPlan].rate,
-      )),
+      )
+      : 0;
+
+    const netIncome = subtract(
+      gross,
+      addThree(
+        calculatedIncomeTax,
+        calculatedNationalInsurance,
+        calculatedStudentLoan,
+      ),
+    );
+
+    return ({
+      netIncome: fromPennies(netIncome),
+      incomeTax: fromPennies(calculatedIncomeTax),
+      nationalInsurance: fromPennies(calculatedNationalInsurance),
+      studentLoan: fromPennies(calculatedStudentLoan),
       allowance: fromPennies(allowance),
     });
   });
