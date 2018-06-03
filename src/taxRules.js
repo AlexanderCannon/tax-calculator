@@ -1,6 +1,7 @@
 module.exports = [
   {
     year: '2018/19',
+    pensionAge: 65,
     allowance: {
       basic: 1185000,
       age6574: 1185000,
@@ -28,26 +29,23 @@ module.exports = [
         rate: 0.45,
       },
     ],
-    nationalInsurance: {
-      pensionAge: 65,
-      rates: [
-        {
-          start: 0,
-          end: 16200,
-          rate: 0,
-        },
-        {
-          start: 16200,
-          end: 89200,
-          rate: 0.12,
-        },
-        {
-          start: 89200,
-          end: -1,
-          rate: 0.02,
-        },
-      ],
-    },
+    nationalInsurance: [
+      {
+        start: 0,
+        end: 16200,
+        rate: 0,
+      },
+      {
+        start: 16200,
+        end: 89200,
+        rate: 0.12,
+      },
+      {
+        start: 89200,
+        end: -1,
+        rate: 0.02,
+      },
+    ],
     studentLoan: {
       plan1: {
         threshold: 1833000,
@@ -61,6 +59,7 @@ module.exports = [
   },
   {
     year: '2017/18',
+    pensionAge: 65,
     allowance: {
       basic: 1150000,
       age6574: 1150000,
@@ -88,26 +87,23 @@ module.exports = [
         rate: 0.45,
       },
     ],
-    nationalInsurance: {
-      pensionAge: 65,
-      rates: [
-        {
-          start: 0,
-          end: 15700,
-          rate: 0,
-        },
-        {
-          start: 15700,
-          end: 86600,
-          rate: 0.12,
-        },
-        {
-          start: 866.00,
-          end: -1,
-          rate: 0.02,
-        },
-      ],
-    },
+    nationalInsurance: [
+      {
+        start: 0,
+        end: 15700,
+        rate: 0,
+      },
+      {
+        start: 15700,
+        end: 86600,
+        rate: 0.12,
+      },
+      {
+        start: 866.00,
+        end: -1,
+        rate: 0.02,
+      },
+    ],
     studentLoan: {
       plan1: {
         threshold: 1777500,

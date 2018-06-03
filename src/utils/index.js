@@ -1,11 +1,36 @@
+const { lt, gt, curry } = require('ramda');
+const differenceInYears = require('date-fns/differenceInYears');
+
 const nearestWholePenny = x => Math.round(x * 100) / 100;
 
-const divideRightToLeft = a => b => b / a;
+const divideRightToLeft = (a, b) => b / a;
 
-const pickSmaller = (a, b) => (a < b ? a : b);
+const curriedDivideRightToLeft = curry(divideRightToLeft);
+
+const pickSmaller = (a, b) => (lt(a, b) ? a : b);
+
+const curriedPickSmaller = curry(pickSmaller);
+
+const pickLarger = (a, b) => (gt(a, b) ? a : b);
+
+const curriedPickLarger = curry(pickLarger);
+
+const aLessThanB = (a, b) =>
+  (!!lt(a, b));
+
+const curriedALessThanB = curry(aLessThanB);
+
+const getAge = dateOfBirth => hi;
 
 module.exports = {
   nearestWholePenny,
   divideRightToLeft,
+  curriedDivideRightToLeft,
   pickSmaller,
+  curriedPickSmaller,
+  pickLarger,
+  curriedPickLarger,
+  aLessThanB,
+  curriedALessThanB,
+  getAge,
 };

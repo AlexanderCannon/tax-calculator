@@ -1,34 +1,35 @@
 const {
-  compose,
+  curry,
   multiply,
   subtract,
   gt,
 } = require('ramda');
-const { divideRightToLeft, pickSmaller } = require('./');
+const { curriedDivideRightToLeft, pickSmaller } = require('./');
 
 const makePennies = multiply(100);
-const fromPennies = divideRightToLeft(100);
-const getOwedForBand = (start, end, rate) => {
-  console.log(gt(start, end));
-  return (gt(end, start) ? multiply(subtract(end, start), rate) : 0);
-};
-
+const fromPennies = curriedDivideRightToLeft(100);
+const getOwedForBand = (start, end, rate) =>
+  (gt(end, start) ? multiply(subtract(end, start), rate) : 0);
 const uncappedBand = bandEnd => (bandEnd === -1);
 
-const getBandEnd = salary => bandEnd => (
-  uncappedBand(bandEnd)
-    ? salary
-    : pickSmaller(salary, bandEnd));
+const getBandEnd = (salary, bandEnd) => (uncappedBand(bandEnd)
+  ? salary
+  : pickSmaller(salary, bandEnd));
 
-const getBandStart = salary => bandStart => (gt(salary, bandStart) ? bandStart : 0);
+const curriedGetBandEnd = curry(getBandEnd);
 
-const bandStartLowerThanAllowance = allowance => bandStart =>
+const getBandStart = (salary, bandStart) => (gt(salary, bandStart) ? bandStart : 0);
+
+const curriedGetBandStart = curry(getBandStart);
+
+const bandStartLowerThanAllowance = (allowance, bandStart) =>
   (gt(allowance, bandStart) ? allowance : bandStart);
 
+const curriedBandStartLowerThanAllowance = curry(bandStartLowerThanAllowance);
 
-const makeMonthly = divideRightToLeft(12);
-const makeWeekly = divideRightToLeft(52);
-const makeDaily = divideRightToLeft(365);
+const makeMonthly = curriedDivideRightToLeft(12);
+const makeWeekly = curriedDivideRightToLeft(52);
+const makeDaily = curriedDivideRightToLeft(365);
 
 const fromMonthly = multiply(12);
 const fromWeekly = multiply(52);
@@ -40,8 +41,11 @@ module.exports = {
   getOwedForBand,
   uncappedBand,
   getBandEnd,
+  curriedGetBandEnd,
   getBandStart,
+  curriedGetBandStart,
   bandStartLowerThanAllowance,
+  curriedBandStartLowerThanAllowance,
   makeMonthly,
   makeWeekly,
   makeDaily,

@@ -1,13 +1,12 @@
-const { compose, add } = require('ramda');
+const { add } = require('ramda');
+const { curriedPickLarger } = require('../utils/');
 const {
   makePennies,
   fromPennies,
-  getBandStart,
-  getBandEnd,
-  getOwedForBand,
-  bandStartLowerThanAllowance,
+  curriedGetBandEnd,
   makeWeekly,
   fromWeekly,
+  getOwedForBand,
 } = require('../utils/tax');
 
 const taxRules = require('../taxRules');
@@ -15,41 +14,35 @@ const taxRules = require('../taxRules');
 const allowance = 1185900;
 
 const getNet = (request, reply) => {
-  const { grossIncome, studentLoanPlan } = request.body;
+  const { grossIncome, studentLoanPlan, dateOfBirth } = request.body;
+  const age = getAge(dateOfBirth);
   const gross = makePennies(grossIncome);
   const weeklyGross = makeWeekly(gross);
-  const partialBandEnd = getBandEnd(gross);
-  const partialWeeklyBandEnd = getBandEnd(weeklyGross);
-  const partialBandStart = getBandStart(gross);
-  const partialWeeklyBandStart = getBandStart(weeklyGross);
-  const partialBandStartLowerThanAllowance = bandStartLowerThanAllowance(allowance);
-  const startOfBand = compose(
-    partialBandStartLowerThanAllowance,
-    partialBandStart,
-  );
 
-  const calculateBand = (start, end, rate) => getOwedForBand(
-    partialBandEnd(start),
-    startOfBand(end),
-    rate,
-  );
-  const taxes = taxRules.map(({ incomeTax, nationalInsurance, studentLoan }) => (
+  const bandStart = curriedPickLarger(allowance);
+  const bandEnd = curriedGetBandEnd(gross);
+  // const weeklyBandStart = curriedPickLarger(allowance);
+  const weeklyBandEnd = curriedGetBandEnd(weeklyGross);
+
+  const calculateIncomeTax = ({ start, end, rate }) =>
+    getOwedForBand(
+      bandStart(start),
+      bandEnd(end), rate,
+    );
+  const calculateNationalInsurance = ({ start, end, rate }) =>
+    getOwedForBand(
+      start,
+      weeklyBandEnd(end), rate,
+    );
+
+  const taxes = taxRules.map(({ incomeTax, nationalInsurance }) => (
     {
       incomeTax: fromPennies(incomeTax
-        .map(({ start, end, rate }) => calculateBand(start, end, rate))
-        .reduce((a, b) => add(a, b), 0)),
-
-      nationalInsurance: fromPennies(fromWeekly(nationalInsurance.rates
-        .map(({ start, end, rate }) =>
-          getOwedForBand(partialWeeklyBandStart(start), partialWeeklyBandEnd(end), rate))
-        .reduce((a, b) => add(a, b), 0))),
-      studentLoan: studentLoanPlan
-        ? fromPennies(calculateBand(
-          studentLoan[studentLoanPlan].threshold,
-          0,
-          studentLoan[studentLoanPlan].rate,
-        ))
-        : 0,
+        .map(calculateIncomeTax)
+        .reduce(add, 0)),
+      nationalInsurance: fromPennies(fromWeekly(nationalInsurance
+        .map(calculateNationalInsurance)
+        .reduce(add, 0))),
     }));
   reply.send(taxes);
 };
