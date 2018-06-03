@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0"></a>
+# 1.0.0 (2018-06-03)
+
+
+### Bug Fixes
+
+* **lint:** added missing lint job ([025cc98](https://github.com/AlexanderCannon/tax-calculator/commit/025cc98))
+* **national insurance:** improved national insurance accuracy ([894c28b](https://github.com/AlexanderCannon/tax-calculator/commit/894c28b))
+
+
+### Features
+
+* **fastify:** upgraded express to fastify ([3a0ece9](https://github.com/AlexanderCannon/tax-calculator/commit/3a0ece9))
+* **national insurance:** added accurate national insurance calculation ([2f41536](https://github.com/AlexanderCannon/tax-calculator/commit/2f41536))
+* **pennies!:** converted the service to use pennies rather than pounds ([514e24a](https://github.com/AlexanderCannon/tax-calculator/commit/514e24a))
+* **ramda:** used ramda to make code safer and more elegant ([5690fc4](https://github.com/AlexanderCannon/tax-calculator/commit/5690fc4))
+
+
+### BREAKING CHANGES
+
+* **national insurance:** API now takes DoB instead of age int
+
+Before: {
+  "grossIncome": "18500",
+  "age": "28",
+  "pensionContributions": "0.0",
+  "studentLoanPlan": "plan1"
+}
+
+Now: {
+  "grossIncome": "18500",
+  "dateOfBirth": "1989/7/17",
+  "pensionContributions": "0.0",
+  "studentLoanPlan": "plan1"
+}
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/AlexanderCannon/tax-calculator/compare/v0.1.1...v0.2.0) (2018-05-28)
 
