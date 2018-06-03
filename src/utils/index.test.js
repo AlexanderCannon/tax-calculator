@@ -8,6 +8,7 @@ const {
   curriedPickLarger,
   aLessThanB,
   curriedALessThanB,
+  getAge,
 } = require('./');
 
 describe('nearestWholePenny', () => {
@@ -70,4 +71,17 @@ describe('curriedALessThanB', () => {
     expect(curriedALessThanB(1)(2)).toBe(true));
   it('should return true if a is less than b', () =>
     expect(curriedALessThanB(2)(1)).toBe(false));
+});
+
+describe('getAge', () => {
+  it('should return the correct age', () => {
+    expect(getAge('1989/07/17', '2018/6/3')).toEqual(28);
+    expect(getAge('2000/07/17', '2018/7/17')).toEqual(18);
+    expect(getAge('2000/07/17', '2018/7/18')).toEqual(18);
+    expect(getAge('2000/07/17', '2018/7/16')).toEqual(17);
+  });
+  it('should not return less than the correct age at the time of writing', () => {
+    expect(getAge('1989/07/17')).toBeGreaterThanOrEqual(28);
+    expect(getAge('2000/07/17')).toBeGreaterThanOrEqual(17);
+  });
 });
