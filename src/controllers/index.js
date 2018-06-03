@@ -1,4 +1,4 @@
-const { add } = require('ramda');
+const { add, __ } = require('ramda');
 const {
   nearestWholePenny,
   curriedPickLarger,
@@ -12,6 +12,7 @@ const {
   makeWeekly,
   fromWeekly,
   getOwedForBand,
+  curriedGetOwedForBand,
 } = require('../utils/tax');
 
 const taxRules = require('../taxRules');
@@ -19,7 +20,7 @@ const taxRules = require('../taxRules');
 const allowance = 1185900;
 
 const getNet = (request, reply) => {
-  const { grossIncome, dateOfBirth } = request.body;
+  const { grossIncome, dateOfBirth, studentLoanPlan } = request.body;
   const age = getAge(dateOfBirth);
   const gross = makePennies(grossIncome);
   const weeklyGross = makeWeekly(gross);
@@ -38,18 +39,27 @@ const getNet = (request, reply) => {
     weeklyBandEnd(end),
     rate,
   );
+  const getStudentLoan = curriedGetOwedForBand(__, gross, __);
 
-  const taxes = taxRules.map(({ incomeTax, nationalInsurance, pensionAge }) => (
-    {
-      incomeTax: fromPennies(incomeTax
-        .map(calculateIncomeTax)
-        .reduce(add, 0)),
-      nationalInsurance: aLessThanB(age, pensionAge)
-        ? fromPennies(nearestWholePenny(fromWeekly(nationalInsurance
-          .map(calculateNationalInsurance)
-          .reduce(add, 0))))
-        : 0,
-    }));
+  const taxes = taxRules.map(({
+    incomeTax,
+    nationalInsurance,
+    pensionAge,
+    studentLoan,
+  }) => ({
+    incomeTax: fromPennies(incomeTax
+      .map(calculateIncomeTax)
+      .reduce(add, 0)),
+    nationalInsurance: aLessThanB(age, pensionAge)
+      ? fromPennies(nearestWholePenny(fromWeekly(nationalInsurance
+        .map(calculateNationalInsurance)
+        .reduce(add, 0))))
+      : 0,
+    studentLoan: studentLoanPlan && fromPennies(getStudentLoan(
+      studentLoan[studentLoanPlan].threshold,
+      studentLoan[studentLoanPlan].rate,
+    )),
+  }));
   reply.send(taxes);
 };
 
