@@ -2,10 +2,10 @@ module.exports = [
   {
     year: '2018/19',
     pensionAge: 65,
-    allowance: {
-      basic: 1185000,
-      age6574: 1185000,
-      age75over: 1185000,
+    allowances: {
+      basic: 1185900,
+      age6574: 1185900,
+      age75over: 1185900,
       blind: 232000,
       thresholds: {
         age: 2770000,
@@ -60,7 +60,7 @@ module.exports = [
   {
     year: '2017/18',
     pensionAge: 65,
-    allowance: {
+    allowances: {
       basic: 1150000,
       age6574: 1150000,
       age75over: 1150000,

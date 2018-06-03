@@ -1,7 +1,7 @@
 const { add, __ } = require('ramda');
 const {
   nearestWholePenny,
-  curriedPickLarger,
+  pickLarger,
   aLessThanB,
   getAge,
 } = require('../utils/');
@@ -14,24 +14,29 @@ const {
   getOwedForBand,
   curriedGetOwedForBand,
 } = require('../utils/tax');
-
+const { curriedTotalAllowances } = require('../utils/personalAllowance');
 const taxRules = require('../taxRules');
 
-const allowance = 1185900;
-
 const getNet = (request, reply) => {
-  const { grossIncome, dateOfBirth, studentLoanPlan } = request.body;
+  const {
+    grossIncome,
+    dateOfBirth,
+    studentLoanPlan,
+    blind,
+    pensionContributions,
+  } = request.body;
   const age = getAge(dateOfBirth);
   const gross = makePennies(grossIncome);
   const weeklyGross = makeWeekly(gross);
+  const getAllowanceFromSalary = curriedTotalAllowances(gross);
 
-  const bandStart = curriedPickLarger(allowance);
+  // const bandStart = curriedPickLarger(allowance);
   const bandEnd = curriedGetBandEnd(gross);
   const weeklyBandEnd = curriedGetBandEnd(weeklyGross);
 
-  const calculateIncomeTax = ({ start, end, rate }) =>
+  const calculateIncomeTax = ({ start, end, rate }, allowance) =>
     getOwedForBand(
-      bandStart(start),
+      pickLarger(start, allowance),
       bandEnd(end), rate,
     );
   const calculateNationalInsurance = ({ start, end, rate }) => getOwedForBand(
@@ -46,20 +51,25 @@ const getNet = (request, reply) => {
     nationalInsurance,
     pensionAge,
     studentLoan,
-  }) => ({
-    incomeTax: fromPennies(incomeTax
-      .map(calculateIncomeTax)
-      .reduce(add, 0)),
-    nationalInsurance: aLessThanB(age, pensionAge)
-      ? fromPennies(nearestWholePenny(fromWeekly(nationalInsurance
-        .map(calculateNationalInsurance)
-        .reduce(add, 0))))
-      : 0,
-    studentLoan: studentLoanPlan && fromPennies(getStudentLoan(
-      studentLoan[studentLoanPlan].threshold,
-      studentLoan[studentLoanPlan].rate,
-    )),
-  }));
+    allowances,
+  }) => {
+    const allowance = getAllowanceFromSalary(allowances, { blind, pensionContributions, age });
+    return ({
+      incomeTax: fromPennies(incomeTax
+        .map(item => calculateIncomeTax(item, allowance))
+        .reduce(add, 0)),
+      nationalInsurance: aLessThanB(age, pensionAge)
+        ? fromPennies(nearestWholePenny(fromWeekly(nationalInsurance
+          .map(calculateNationalInsurance)
+          .reduce(add, 0))))
+        : 0,
+      studentLoan: studentLoanPlan && fromPennies(getStudentLoan(
+        studentLoan[studentLoanPlan].threshold,
+        studentLoan[studentLoanPlan].rate,
+      )),
+      allowance: fromPennies(allowance),
+    });
+  });
   reply.send(taxes);
 };
 

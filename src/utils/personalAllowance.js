@@ -1,3 +1,5 @@
+const { curry } = require('ramda');
+
 const { nearestWholePenny } = require('./');
 
 const getAgeRelatedContributions = (allowance, user) => {
@@ -72,17 +74,20 @@ const getBlindAllowance = (allowance, user) => {
 };
 
 const getTotalAllowances = (
+  grossIncome,
   allowance,
   user,
-  grossIncome,
 ) => getPersonalAllowance(allowance, user, grossIncome) + getBlindAllowance(allowance, user);
 
+const curriedTotalAllowances = curry(getTotalAllowances);
+
 module.exports = {
-  getTotalAllowances,
-  getBlindAllowance,
-  getPersonalAllowance,
-  getTaperDeductions,
-  getAllowanceAfterAgeAdjust,
-  getAgeRelatedTaperDeductions,
   getAgeRelatedContributions,
+  getAgeRelatedTaperDeductions,
+  getAllowanceAfterAgeAdjust,
+  getTaperDeductions,
+  getPersonalAllowance,
+  getBlindAllowance,
+  getTotalAllowances,
+  curriedTotalAllowances,
 };
