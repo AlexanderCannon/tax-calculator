@@ -6,20 +6,20 @@
   "license": "UNLISCENCED",
   "private": true,
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "date-fns": "^1.29.0",
-    "express": "^4.16.3",
-    "fastify": "^1.5.0",
-    "fastify-helmet": "^1.0.3",
+    "body-parser": "^1.19.0",
+    "date-fns": "^1.30.1",
+    "express": "^4.17.1",
+    "fastify": "^2.4.1",
+    "fastify-helmet": "^3.0.0",
     "helmet": "^3.12.1",
-    "ramda": "^0.25.0",
-    "standard-version": "^4.4.0"
+    "ramda": "^0.26.1",
+    "standard-version": "^6.0.1"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.12.0",
-    "jest": "^23.0.1"
+    "jest": "^24.8.0"
   },
   "scripts": {
     "start": "nodemon src",
